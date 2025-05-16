@@ -1,14 +1,20 @@
 import customtkinter as ctk
+import tkinter as tk
 
 NUM_BITS = 16
 FONT = ('Arial', 64)
 count = 0
 max_num = 2**NUM_BITS-1
+TEXT_COLOR = '#2FBA2F'
+BACKGROUND_COLOR = '#0b0b0b'
+BUTTON_TEXT_COLOR = '#08AF08'
+BUTTON_COLOR = '#0A193B'
 
 app = ctk.CTk()
-app.geometry("400x200")
+app.geometry(f"{NUM_BITS * 44}x250")
 app.title("Binary Counter")
-counter_frame = ctk.CTkFrame(app)
+app.iconphoto(True, tk.PhotoImage(file='icon.png'))
+counter_frame = ctk.CTkFrame(app, fg_color=BACKGROUND_COLOR)
 counter_frame.pack(fill='both', expand=True, padx=30, pady=30)
 bit_list = []
 
@@ -17,8 +23,9 @@ for i in range(4):
 
 for i in range(0, NUM_BITS):
     counter_frame.grid_columnconfigure(i, weight=1)
-    bit_label = ctk.CTkLabel(master=counter_frame, font=FONT, text='0',
-                             padx=5)
+    bit_label = ctk.CTkLabel(master=counter_frame, font=FONT,
+                             text_color=TEXT_COLOR, bg_color=BACKGROUND_COLOR,
+                             text='0', padx=5)
     bit_list.append(bit_label)
     bit_label.grid(row=1, column=i)
 
@@ -29,10 +36,14 @@ def reset_counter():
 
 
 reset_button = ctk.CTkButton(counter_frame, text="RESET", font=('Arial', 24),
+                             text_color=BUTTON_TEXT_COLOR, bg_color=BACKGROUND_COLOR,
+                             fg_color=BUTTON_COLOR,
+                             hover_color='dark red',
                              command=reset_counter)
 reset_button.grid(row=2, column=0, columnspan=NUM_BITS)
 
-decimal_label = ctk.CTkLabel(counter_frame, font=FONT, text=str(count))
+decimal_label = ctk.CTkLabel(counter_frame, font=FONT, text_color=TEXT_COLOR,
+                             bg_color=BACKGROUND_COLOR, text=str(count))
 decimal_label.grid(row=3, column=0, columnspan=NUM_BITS)
 
 
