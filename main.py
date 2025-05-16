@@ -2,7 +2,8 @@ import customtkinter as ctk
 import tkinter as tk
 
 NUM_BITS = 16
-FONT = ('Arial', 64)
+FONT = "American Typewriter"
+DISPLAY_FONT = (FONT, 64)
 count = 0
 max_num = 2**NUM_BITS-1
 TEXT_COLOR = '#2FBA2F'
@@ -23,7 +24,7 @@ for i in range(4):
 
 for i in range(0, NUM_BITS):
     counter_frame.grid_columnconfigure(i, weight=1)
-    bit_label = ctk.CTkLabel(master=counter_frame, font=FONT,
+    bit_label = ctk.CTkLabel(master=counter_frame, font=DISPLAY_FONT,
                              text_color=TEXT_COLOR, bg_color=BACKGROUND_COLOR,
                              text='0', padx=5)
     bit_list.append(bit_label)
@@ -35,14 +36,14 @@ def reset_counter():
     count = 0
 
 
-reset_button = ctk.CTkButton(counter_frame, text="RESET", font=('Arial', 24),
+reset_button = ctk.CTkButton(counter_frame, text="RESET", font=(FONT, 24),
                              text_color=BUTTON_TEXT_COLOR, bg_color=BACKGROUND_COLOR,
                              fg_color=BUTTON_COLOR,
                              hover_color='dark red',
                              command=reset_counter)
 reset_button.grid(row=2, column=0, columnspan=NUM_BITS)
 
-decimal_label = ctk.CTkLabel(counter_frame, font=FONT, text_color=TEXT_COLOR,
+decimal_label = ctk.CTkLabel(counter_frame, font=DISPLAY_FONT, text_color=TEXT_COLOR,
                              bg_color=BACKGROUND_COLOR, text=str(count))
 decimal_label.grid(row=3, column=0, columnspan=NUM_BITS)
 
