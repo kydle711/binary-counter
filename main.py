@@ -62,7 +62,7 @@ def update_counter():
     else:
         count += 1
 
-    app.after(400, update_counter)
+    app.after(500, update_counter)
 
 
 if __name__ == '__main__':
