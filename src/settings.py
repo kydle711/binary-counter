@@ -3,7 +3,6 @@
 class Settings:
     """ UI and behavior configurations for Binary Counter """
     hex_display = False
-    speed = 400
     num_bits = 8
     FONT = "American Typewriter"
     DISPLAY_FONT = (FONT, 64)
@@ -20,4 +19,5 @@ class Settings:
     PLAY_BUTTON_COLOR = '#3F7F36'
     BUTTON_FONT = (FONT, 24)
     ICON_SIZE = (65, 65)
+    SPEED_OPTIONS = {"SLOWEST": 1200, "SLOW": 800, "MED": 400, "FAST": 200, "FASTEST": 40}
 

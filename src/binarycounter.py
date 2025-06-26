@@ -28,7 +28,7 @@ class BinaryCounter:
         self.bit_selection_menu = None
 
         """ Settings """
-        self.speed = Settings.speed
+        self.speed = 400  # Start at medium speed
         self.num_bits = Settings.num_bits  # Defaults to 8
         self.hex_display_flag = Settings.hex_display  # Defaults to False
         self.reset_button_color = Settings.RESET_BUTTON_COLOR
@@ -44,6 +44,7 @@ class BinaryCounter:
         self.icon_size = Settings.ICON_SIZE
         self.play_button_color = Settings.PLAY_BUTTON_COLOR
         self.pause_button_color = Settings.PAUSE_BUTTON_COLOR
+        self.speed_options = Settings.SPEED_OPTIONS
 
         """ Setup """
         self.count = 0
@@ -104,21 +105,15 @@ class BinaryCounter:
     def reset_num_bits(self, new_num: str):
         self.reset_counter()
         self.num_bits = int(new_num)
+        self.max_num = 2 ** self.num_bits - 1  # Reset max_num to new bit size
         for bit_label in self.bit_list:
             bit_label.destroy()
         self.bit_list = []
         self._set_app_size()
         self.setup_binary_display()
 
-    def set_speed(self, speed: str):
-        if speed == 'SLOW':
-            self.speed = 800
-        elif speed == 'MED':
-            self.speed = 400
-        elif speed == 'FAST':
-            self.speed = 200
-        else:
-            print("INVALID SPEED INPUT")
+    def set_speed(self, new_speed: str):
+        self.speed = self.speed_options[new_speed]
 
     def configure_app(self):
         self._set_app_size()
@@ -144,6 +139,10 @@ class BinaryCounter:
         self.row2_frame = ctk.CTkFrame(self.base_frame, fg_color=self.bg_color)
         self.row3_frame = ctk.CTkFrame(self.base_frame, fg_color=self.bg_color)
 
+        self.row1_frame.grid_rowconfigure(0, weight=1)
+        self.row2_frame.grid_rowconfigure(0, weight=1)
+        self.row3_frame.grid_rowconfigure(0, weight=1)
+
         for i in range(4):
             self.row2_frame.grid_columnconfigure(i, weight=1)
 
@@ -155,7 +154,7 @@ class BinaryCounter:
         self.row3_frame.grid(row=2, sticky='nsew')
 
     def setup_binary_display(self):
-        for i in range(0, self.num_bits):
+        for i in range(self.num_bits):
             self.row1_frame.grid_columnconfigure(i, weight=1)
             bit_label = ctk.CTkLabel(master=self.row1_frame,
                                      font=self.display_font,
@@ -163,11 +162,7 @@ class BinaryCounter:
                                      bg_color=self.bg_color,
                                      text='0', padx=5)
             self.bit_list.append(bit_label)
-            bit_label.grid(row=1, column=i, sticky='ew')
-
-    def setup_hex_display(self):
-        pass
-        #self.hex_frame = ctk.CTkFrame(master=self.base_frame, fg_color=self.bg_color)
+            bit_label.grid(row=0, column=i, sticky='nsew')
 
     def configure_permanent_widgets(self):
         self.reset_button = ctk.CTkButton(self.row2_frame, text="RESET",
@@ -215,7 +210,7 @@ class BinaryCounter:
                                                       font=self.speed_select_font,
                                                       anchor='center',
                                                       dropdown_font=self.button_font,
-                                                      values=['SLOW', 'MED', 'FAST'],
+                                                      values=[key for key in self.speed_options.keys()],
                                                       command=self.set_speed)
 
         self.speed_selection_menu.set(value='MED')
@@ -232,6 +227,6 @@ class BinaryCounter:
         self.reset_button.grid(row=0, column=0, stick='ew', padx=5)
         self.decimal_label.grid(row=0, column=0, sticky='nsew', padx=5)
         self.hex_label.grid(row=0, column=1, sticky='nsew', padx=5)
-        self.pause_play_button.grid(row=0, column=1, sticky='nsew', padx=5)
+        self.pause_play_button.grid(row=0, column=1, sticky='ew', padx=5)
         self.bit_selection_menu.grid(row=0, column=2, sticky='ew', padx=5)
         self.speed_selection_menu.grid(row=0, column=3, sticky='ew', padx=5)
